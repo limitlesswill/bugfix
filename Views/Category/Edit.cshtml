@@ -1,27 +1,63 @@
 ﻿@model EcommerceWebSite.Dashboard.ViewModel.addOrUpdateCategoryViewModel;
-@{ ViewData["Title"] = "Edit Category Page"; }
 
-<form asp-action="Edit" method="post">
-    <div asp-validation-summary="All" class="error"></div>
-    <div class="form-group">
-        <label>Category EnName</label>
-        <input type="text" class="form-control" asp-for="EnName" placeholder="Enter category EnName">
-        <span asp-validation-for="EnName" style="color:red" class="form-text text-muted"></span>
+@if (Model is not null)
+{
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="error" style="color:red"></div>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary w-25">Submit</button>
+        </div>
+        <div class="form-group">
+            <label>English Category Name</label>
+            <input type="text" class="form-control" asp-for="enName" placeholder="Enter category English Name">
+            <span asp-validation-for="enName" style="color:red" class="form-text text-muted"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="imgURL" class="control-label">Category English Image</label>
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <input type="file" name="imgURL" asp-for="imgURL" class="form-control-file" id="img" onchange="previewImage(this, 'previewImg')" accept="image/*" />
+                <img alt="" src="@Url.Content("~/images/" + @Model.imgURL.FileName)" style="display:inline;max-width: 200px; max-height: 200px;" id="previewImg" />
+            </div>
+            <span asp-validation-for="imgURL" style="color:red" class="form-text text-muted"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Arabic Category Name</label>
+            <input type="text" class="form-control" asp-for="arName" placeholder="Enter category Arabic Name">
+            <span asp-validation-for="arName" style="color:red" class="form-text text-muted"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="imgURLAr" class="control-label">Category Arabic Image</label>
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <input type="file" name="imgURLAr" asp-for="imgURLAr" class="form-control-file" id="imgAr" onchange="previewImage(this, 'previewImgAr')" accept="image/*" />
+                <img alt="" src="@Url.Content("~/images/" + @Model.imgURLAr.FileName)" style="display:inline;max-width: 200px; max-height: 200px;" id="previewImgAr" />
+            </div>
+            <span asp-validation-for="imgURLAr" style="color:red" class="form-text text-muted"></span>
+        </div>
+    </form>
+}
+else
+{
+    <div class="container-fluid mx-auto text-center" style="margin-top:27vh;">
+        <h2 style="color:red;">Incorrect URL, Item Doesn't exist</h2>
+        <p style="color:red;">please check URL and try again later</p>
     </div>
-    <div class="form-group">
-        <label>Category ArName</label>
-        <input type="text" class="form-control" asp-for="ArName" placeholder="Enter category ArName">
-        <span asp-validation-for="ArName" style="color:red" class="form-text text-muted"></span>
-    </div>
-    <div class="form-group">
-        <label>Category EnImgURL</label>
-        <input type="text" class="form-control" asp-for="imgURL" placeholder="Enter category imgURL">
-        <span asp-validation-for="imgURL" style="color:red" class="form-text text-muted"></span>
-    </div>
-    <div class="form-group">
-        <label>Category imgURLAr</label>
-        <input type="text" class="form-control" asp-for="imgURLAr" placeholder="Enter category imgURL">
-        <span asp-validation-for="imgURLAr" style="color:red" class="form-text text-muted"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+}
+
+<script>
+    function previewImage(input, imgId) {
+        var imgElement = document.getElementById(imgId);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                imgElement.src = e.target.result;
+                reader.abort();
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            imgElement.src = "";
+        }
+    }
+</script>

@@ -1,5 +1,6 @@
 ﻿@model List<Category>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,10 +32,10 @@
         </a>
         <div class="row">
             <div class="col-12">
-                <table class="table table-bordered" style="background-color:white">
+                <table class="table table-bordered text-center" style="background-color:white">
                     <thead>
                         <tr>
-                            <th scope="col">Img</th>
+                            <th scope="col">ID</th>
                             <th scope="col">EnName</th>
                             <th scope="col">ArName</th>
                             <th scope="col">Actions</th>
@@ -43,16 +44,15 @@
                     <tbody>
                         @foreach (var cat in Model)
                         {
-                        <tr>
-                            <td><img src="@cat.imgURL" alt="Product Image" style="max-width: 43px; max-height: 43px;" /></td>
-                            <td>@cat.EnName</td>
-                            <td>@cat.ArName</td>
-                            <td>
-                                <button type="button" class="btn btn-primary"><i class="fas fa-eye"></i></button>
-                                <a href="@Url.Action("Edit", new { id = cat.id })" class="btn btn-success"><i class="fas fa-edit"></i></a>
-                                <button onclick="showConfirmationModal('@cat.id')" type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="fw-bold text-center">@cat.id</td>
+                                <td class="fw-bold text-center">@cat.EnName</td>
+                                <td class="fw-bold text-center">@cat.ArName</td>
+                                <td class="d-flex flex-row justify-content-around align-items-center">
+                                    <a asp-controller="Category" asp-action="Edit" asp-route-id="@cat.id" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                    <button onclick="showConfirmationModal('@cat.id')" type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    @await Html.PartialAsync("showConfirmationModal");
+    @await Html.PartialAsync("showConfirmationModal")
 
     <script>
         var _apiBaseUrl = '@ViewBag.ApiBaseUrl';
@@ -95,10 +95,10 @@
                     console.log('User deleted successfully');
 
                     // Optionally, update the UI or reload the page
-                    // Example: Reload the page after 1 second
+                    // Example: Reload the page after 50 Milliseconds
                     setTimeout(function () {
                         location.reload();
-                    }, 200);
+                    }, 50);
                 } else {
                     console.error('Error deleting user:', response.statusText);
                 }

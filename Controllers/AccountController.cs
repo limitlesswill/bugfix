@@ -1,12 +1,11 @@
 ﻿using EcommerceWebSite.Dashboard.Models;
 using EcommerceWebSite.Dashboard.ViewModel;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -28,6 +27,11 @@ namespace EcommerceWebSite.Dashboard.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            var islogged = HttpContext.Session.GetString("email");
+            if (!string.IsNullOrEmpty(islogged))
+            {
+                return RedirectToAction("index", "home");
+            }
             return View();
         }
         // POST: Submits the registration form
@@ -37,17 +41,18 @@ namespace EcommerceWebSite.Dashboard.Controllers
             if (ModelState.IsValid)
             {
                 var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync($"{_apiBaseUrl}/api/account/addSeller", content);
+                var response = await _httpClient.PostAsync($"{_apiBaseUrl}/api/account/addAdmin", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Redirect or show a success message
-                    return RedirectToAction("Login");
+                    // WAEL FIX
+                    return RedirectToAction("getCategory", "Category");
                 }
                 else
                 {
+                    var err = await response.Content.ReadAsStringAsync();
                     // Handle API errors (e.g., display them to the user)
-                    ModelState.AddModelError(string.Empty, "An error occurred while registering.");
+                    ModelState.AddModelError(string.Empty, $"ERROR: {err}. ");
                 }
             }
 
@@ -55,11 +60,13 @@ namespace EcommerceWebSite.Dashboard.Controllers
             return View(model);
         }
 
+        [LoggedinOnly]
         [HttpGet]
         public IActionResult addAdmin()
         {
             return View();
         }
+        [LoggedinOnly]
         // POST: Submits the registration form
         [HttpPost]
         public async Task<IActionResult> addAdmin(RegisterUserDto model)
@@ -78,8 +85,9 @@ namespace EcommerceWebSite.Dashboard.Controllers
                 }
                 else
                 {
+                    var err = await response.Content.ReadAsStringAsync();
                     // Handle API errors (e.g., display them to the user)
-                    ModelState.AddModelError(string.Empty, "An error occurred while registering.");
+                    ModelState.AddModelError(string.Empty, $"ERROR: {err}. ");
                 }
             }
 
@@ -89,6 +97,11 @@ namespace EcommerceWebSite.Dashboard.Controllers
 
         public IActionResult Login()
         {
+            var islogged = HttpContext.Session.GetString("email");
+            if (!string.IsNullOrEmpty(islogged))
+            {
+                return RedirectToAction("index", "home");
+            }
             return View();
         }
 
@@ -104,13 +117,22 @@ namespace EcommerceWebSite.Dashboard.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
+                        var Roles = await _httpClient.PostAsync($"{_apiBaseUrl}/api/account/getRole", content);
+                        var RoleList = await Roles.Content.ReadAsStringAsync();
+                        if (!RoleList.ToLower().Contains("admin"))
+                        {
+                            ModelState.AddModelError(string.Empty, $"Only Admins allowed to use Dashboard");
+                            return View(model);
+                        }
+
                         var responseData = await response.Content.ReadAsStringAsync();
                         var tokenData = JsonConvert.DeserializeObject<TokenResponse>(responseData);
-                        
+
                         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenData.token);
                         HttpContext.Session.SetString("AccessToken", tokenData.token);
+                        HttpContext.Session.SetString("email", model.UserEmail);
                         // Redirect to dashboard or another protected area
-                        return RedirectToAction("getCategory", "Category");
+                        return RedirectToAction("index", "home");
                     }
                     else
                     {
@@ -125,12 +147,18 @@ namespace EcommerceWebSite.Dashboard.Controllers
                 }
             }
 
-            // If we got this far, something failed; redirect to login page
+            // Wael FIX
+            return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
             return RedirectToAction("Login", "Account");
         }
-    
 
-    public IActionResult Index()
+        [LoggedinOnly]
+        public async Task<IActionResult> Index()
         {
             return View();
         }

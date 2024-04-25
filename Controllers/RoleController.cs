@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace EcommerceWebSite.Dashboard.Controllers
 {
+    [LoggedinOnly]
     public class RoleController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -35,14 +36,14 @@ namespace EcommerceWebSite.Dashboard.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    
+
                     return RedirectToAction("Dashboard", "Dashboard");
                 }
                 else
                 {
-
+                    var err = await response.Content.ReadAsStringAsync();
                     // Handle API errors (e.g., display them to the user)
-                    ModelState.AddModelError(string.Empty, "An error occurred while adding.");
+                    ModelState.AddModelError(string.Empty, $"ERROR: {err}. ");
                 }
             }
 
@@ -50,7 +51,7 @@ namespace EcommerceWebSite.Dashboard.Controllers
             return View(model);
         }
 
-        
+
         public IActionResult Index()
         {
             return View();

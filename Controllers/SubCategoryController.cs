@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace EcommerceWebSite.Dashboard.Controllers
 {
+    [LoggedinOnly]
     public class SubCategoryController : Controller
     {
         private readonly HttpClient _httpClient;

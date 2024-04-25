@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace EcommerceWebSite.Dashboard.Controllers
 {
+    [LoggedinOnly]
     public class ProductController : Controller
     {
         private readonly HttpClient _httpClient;

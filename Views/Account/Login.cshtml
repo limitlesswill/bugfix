@@ -1,6 +1,7 @@
 ﻿@model EcommerceWebSite.Dashboard.ViewModel.LoginViewModel;
-@{ ViewData["Title"] = "Register Page";
-                Layout = null; 
+@{
+    ViewData["Title"] = "Register Page";
+    Layout = null;
 }
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -18,7 +19,8 @@
             <p class="divider-text">
             </p>
             <form asp-action="Login" method="post">
-                <div asp-validation-summary="All" class="error"></div>
+                <!-- WAEL FIX -->
+                <div asp-validation-summary="All" class="error" style="color:red"></div>
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
@@ -29,11 +31,12 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input asp-for="Password" class="form-control" placeholder="Create password" type="password">
-                </div>   
+                    <input asp-for="Password" class="form-control" placeholder="Enter password" type="password">
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Login </button>
                 </div>
+                <p class="text-center">Don't 'Have an account? <a asp-controller="Account" asp-action="Register">Register</a> </p>
             </form>
         </article>
     </div> <!-- card.// -->

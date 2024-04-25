@@ -15,11 +15,10 @@ using System.Threading.Tasks;
 
 namespace EcommerceWebSite.Dashboard.Controllers
 {
-    //[Authorize]
     public class dashboardController : Controller
     {
 
-
+        [LoggedinOnly]
         public IActionResult dashboard()
         {
             
