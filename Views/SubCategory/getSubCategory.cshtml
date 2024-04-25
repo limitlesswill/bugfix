@@ -1,0 +1,112 @@
+﻿@model List<SubCategory>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+    <style>
+        /* Styles for the main page */
+        .container {
+            padding: 2rem 0rem;
+        }
+
+        h4 {
+            margin: 2rem 0rem 1rem;
+        }
+
+        .table-image td,
+        .table-image th {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a asp-action="addSubCategory" asp-controller="SubCategory" class="btn d-inline-flex btn-sm btn-primary mx-1 mb-3">
+            <span class="pe-2">
+                <i class="bi bi-plus"></i>
+            </span>
+            <span>Add New</span>
+        </a>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered" style="background-color:white">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">EnName</th>
+                            <th scope="col">ArName</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var subcat in Model)
+                        {
+                        <tr>
+                            <td>@subcat.id</td>
+                            <td>@subcat.EnName</td>
+                            <td>@subcat.ArName</td>
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = subcat.id })" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                <button onclick="showConfirmationModal('@subcat.id')" type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @await Html.PartialAsync("showConfirmationModal");
+
+    <script>
+        var _apiBaseUrl = '@ViewBag.ApiBaseUrl';
+        function showConfirmationModal(userId) {
+            var modal = document.getElementById('confirmModal');
+            if (modal) {
+                modal.style.display = 'block';
+
+                var confirmBtn = document.getElementById('confirmBtn');
+                var cancelBtn = document.getElementById('cancelBtn');
+
+                confirmBtn.onclick = function () {
+                    modal.style.display = 'none';
+                    deleteUser(userId);
+                };
+
+                cancelBtn.onclick = function () {
+                    modal.style.display = 'none';
+                };
+            } else {
+                console.error('Modal element not found');
+            }
+        }
+
+        async function deleteUser(userId) {
+            try {
+                const response = await fetch(`${_apiBaseUrl}/${userId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    console.log('User deleted successfully');
+
+                    // Optionally, update the UI or reload the page
+                    // Example: Reload the page after 1 second
+                    setTimeout(function () {
+                        location.reload();
+                    }, 200);
+                } else {
+                    console.error('Error deleting user:', response.statusText);
+                }
+
+            } catch (error) {
+                console.error('An unexpected error occurred:', error);
+            }
+        }
+    </script>
+</body>
+</html>

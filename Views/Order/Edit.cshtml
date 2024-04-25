@@ -1,0 +1,21 @@
+﻿@model EcommerceWebSite.Dashboard.ViewModel.OrderUserDto;
+@{ ViewData["Title"] = "Update Order State Page"; }
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="error"></div>
+  
+
+<div class="form-group">
+    <label>Update State</label>
+    <select asp-for="State" class="form-control pt-1">
+        <option value="1">Pending</option>
+        <option value="2">Confirmed</option>
+        <option value="3">Canceled</option>
+        <option value="4">Paid</option>
+
+    </select>
+    <span asp-validation-for="State" style="color:red" class="form-text text-muted"></span>
+</div>
+
+    <button type="submit" class="btn btn-primary">Edit</button>
+</form>

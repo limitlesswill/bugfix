@@ -1,0 +1,63 @@
+﻿@model List<Order>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+    <style>
+        /* Styles for the main page */
+        .container {
+            padding: 2rem 0rem;
+        }
+
+        h4 {
+            margin: 2rem 0rem 1rem;
+        }
+
+        .table-image td,
+        .table-image th {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered" style="background-color:white">
+                    <thead>
+                        <tr>
+                            <th scope="col">finalPrice</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">State</th>
+                            <th scope="col">user name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cat in Model)
+                        {
+                            <tr>
+                                <td>@cat.FinalPrice</td>
+                                <td>@cat.Date</td>
+                                <td>@cat.State</td>
+                                <td>@cat.UserName</td>
+                                <td>@cat.Address</td>
+
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = cat.Id })" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+  
+</body>
+</html>

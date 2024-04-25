@@ -1,0 +1,45 @@
+﻿@model EcommerceWebSite.Dashboard.ViewModel.RegisterUserDto;
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<form asp-action="addAdmin" method="post">
+    <div asp-validation-summary="All" style="color:red"></div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputfname">First Name</label>
+            <input asp-for="fName" type="text" class="form-control" placeholder="First Name">
+            <span asp-validation-for="fName" style="color:red"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputfname">Last Name</label>
+            <input asp-for="lName" type="text" class="form-control" placeholder="Last Name">
+            <span asp-validation-for="lName" style="color:red"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputEmail">Phone Number</label>
+        <input type="text" asp-for="PhoneNumber" class="form-control" placeholder="Enter the Phone">
+        <span asp-validation-for="PhoneNumber" style="color:red"></span>
+    </div>
+    <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input type="email" asp-for="email" class="form-control" placeholder="Enter the Email">
+        <span asp-validation-for="email" style="color:red"></span>
+    </div>
+    <div class="form-group">
+        <label for="inputPsw">Passwoard</label>
+        <input asp-for="password" type="password" class="form-control" placeholder="Enter The Passwoard">
+        <span asp-validation-for="password" style="color:red"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPsw">Confirm Passwoard</label>
+        <input asp-for="comfirmPassword" type="password" class="form-control" placeholder="Confirm Passwoard">
+        <span asp-validation-for="comfirmPassword" style="color:red"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">ADD</button>
+</form>

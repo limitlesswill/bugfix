@@ -1,0 +1,34 @@
+﻿@model EcommerceWebSite.Dashboard.ViewModel.addOrUpdateSubCategoryViewModel;
+@{ ViewData["Title"] = "ADD SubCategory Page"; }
+
+<form asp-action="addSubCategory" method="post">
+    <div asp-validation-summary="All" class="error"></div>
+    <div class="form-group">
+        <label>SubCategory EnName</label>
+        <input type="text" class="form-control" asp-for="EnName" placeholder="Enter EnName">
+        <span asp-validation-for="EnName" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>SubCategory ArName</label>
+        <input type="text" class="form-control" asp-for="ArName" placeholder="Enter ArName">
+        <span asp-validation-for="ArName" style="color:red" class="form-text text-muted"></span>
+    </div>
+
+    @if (ViewData["Categories"] != null)
+    {
+        var categories = ViewData["Categories"] as List<Category>;
+        if (categories.Any())
+        {
+<div class="form-group">
+    <label>Category Name</label>
+    <select asp-for="categoryid" class="form-control pt-2">
+        @foreach (var category in categories)
+        {
+<option value="@category.id">@category.EnName</option>
+}
+    </select>
+    <span asp-validation-for="categoryid" style="color:red" class="form-text text-muted"></span>
+</div>}
+}
+    <button type="submit" class="btn btn-primary">ADD</button>
+</form>

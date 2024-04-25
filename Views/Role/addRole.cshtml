@@ -1,0 +1,14 @@
+﻿@model EcommerceWebSite.Dashboard.ViewModel.addRoleViewModel;
+@{ ViewData["Title"] = "Add Role Page";
+   
+}
+
+<form asp-action="addRole" method="post">
+    <div asp-validation-summary="All" style="color:red"></div>
+    <div class="form-group">
+        <label>Role Name</label>
+        <input type="text" class="form-control" asp-for="RoleName" placeholder="Enter role name">
+        <span asp-validation-for="RoleName" style="color:red"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -1,0 +1,67 @@
+﻿@model EcommerceWebSite.Dashboard.ViewModel.addOrUpdateProductViewModel;
+@{ ViewData["Title"] = "ADD Product Page"; }
+<h2>Add SubCategory</h2>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+<form asp-action="addProduct" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="error"></div>
+    <div class="form-group">
+        <label>English Name</label>
+        <input type="text" class="form-control" asp-for="enName" placeholder="Enter English Name">
+        <span asp-validation-for="enName" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>Arabic Name</label>
+        <input type="text" class="form-control" asp-for="arName" placeholder="Enter Arabic Name">
+        <span asp-validation-for="arName" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>EnDescription</label>
+        <textarea type="text" class="form-control" asp-for="EnDescription" placeholder="Enter EnDescription"></textarea>
+        <span asp-validation-for="EnDescription" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>ArDescription</label>
+        <textarea type="text" class="form-control" asp-for="ArDescription" placeholder="Enter ArDescription"></textarea>
+        <span asp-validation-for="ArDescription" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" class="form-control" asp-for="Quantity" placeholder="Enter quantity">
+        <span asp-validation-for="Quantity" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <input type="number" class="form-control" asp-for="price" placeholder="Enter Price">
+        <span asp-validation-for="price" style="color:red" class="form-text text-muted"></span>
+    </div>
+
+    @if (ViewData["SubCategories"] != null)
+    {
+        var categories = ViewData["SubCategories"] as List<SubCategory>;
+        if (categories.Any())
+        {
+<div class="form-group">
+    <label>SubCategory Name</label>
+    <select asp-for="SubCategoryId" class="form-control pt-2">
+        @foreach (var Subcat in categories)
+        {
+<option value="@Subcat.id">@Subcat.EnName</option>}
+    </select>
+    <span asp-validation-for="SubCategoryId" style="color:red" class="form-text text-muted"></span>
+</div>}
+}
+
+    <!-- Image upload field -->
+    <div class="form-group">
+        <label asp-for="imgURL" class="control-label">Image</label>
+        <input type="file" name="Image" class="form-control-file" />
+        <span asp-validation-for="imgURL" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">ADD</button>
+</form>

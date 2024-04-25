@@ -1,0 +1,27 @@
+﻿@model EcommerceWebSite.Dashboard.ViewModel.addOrUpdateCategoryViewModel;
+@{ ViewData["Title"] = "Add Category Page"; }
+
+<form asp-action="addCategory" method="post">
+    <div asp-validation-summary="All" class="error"></div>
+    <div class="form-group">
+        <label>Category EnName</label>
+        <input type="text" class="form-control" asp-for="EnName" placeholder="Enter category EnName">
+        <span asp-validation-for="EnName" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>Category ArName</label>
+        <input type="text" class="form-control" asp-for="ArName" placeholder="Enter category ArName">
+        <span asp-validation-for="ArName" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>Category EnImgURL</label>
+        <input type="text" class="form-control" asp-for="imgURL" placeholder="Enter category imgURL">
+        <span asp-validation-for="imgURL" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <div class="form-group">
+        <label>Category imgURLAr</label>
+        <input type="text" class="form-control" asp-for="imgURLAr" placeholder="Enter category imgURL">
+        <span asp-validation-for="imgURLAr" style="color:red" class="form-text text-muted"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
