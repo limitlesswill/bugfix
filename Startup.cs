@@ -25,15 +25,16 @@ namespace EcommerceWebSite.Dashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
                 // Configure session options
                 options.Cookie.Name = ".YourApp.Session";
-                options.IdleTimeout = TimeSpan.FromSeconds(10); // Set the session timeout
+                options.IdleTimeout = TimeSpan.FromDays(3); // Set the session timeout
                 options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true; 
+                options.Cookie.IsEssential = true;
             });
             //[Authoriz] used JWT Token in Chck Authantiaction
             services.AddAuthentication(options =>
@@ -41,7 +42,8 @@ namespace EcommerceWebSite.Dashboard
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options => {
+            }).AddJwtBearer(options =>
+            {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters()
@@ -54,11 +56,11 @@ namespace EcommerceWebSite.Dashboard
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
                 };
             });
-           
+
             services.AddHttpClient();
-            
+
         }
-    
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -71,9 +73,9 @@ namespace EcommerceWebSite.Dashboard
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
-            
-            
+
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
@@ -84,6 +86,12 @@ namespace EcommerceWebSite.Dashboard
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}/{id?}");
+
+                endpoints.MapControllerRoute(
+                     name: "NotFound",
+                     pattern: "{*url}",
+                     defaults: new { controller = "NotFound", action = "Index" });
+
             });
         }
     }
